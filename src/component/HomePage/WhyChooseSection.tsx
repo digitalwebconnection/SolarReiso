@@ -1,4 +1,3 @@
-"use client"
 
 import { Shield, TrendingUp, Award, Building } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
@@ -123,7 +122,7 @@ export default function HighlightsSection() {
                 <div className={`absolute inset-0 bg-linear-to-br ${h.tint} opacity-80`} />
 
                 {/* Shine Effect */}
-                <div className="absolute inset-0 bg-linear-to-r from-transparent via-[#f6b643]/40 to-transparent -translate-x-[200%] group-hover:translate-x-[200%] transition-transform duration-2200 ease-out" />
+                <div className="absolute inset-0 bg-linear-to-r from-transparent via-[#f6b643]/80 to-transparent -translate-x-[200%] group-hover:translate-x-[200%] transition-transform duration-2200 ease-out" />
 
                 <div className="relative z-10 text-center">
                   <div className="mb-5 flex justify-center">

@@ -1,4 +1,4 @@
-"use client";
+
 
 import { useRef, type JSX } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
@@ -26,7 +26,7 @@ export default function GreenRevolutionHero(): JSX.Element {
     /* SCROLL AREA */
     <section
       ref={containerRef}
-      className="relative h-[330vh] w-full bg-white"
+      className="relative h-[380vh] w-full bg-white"
     >
       {/* STICKY FULLSCREEN HERO */}
       <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">

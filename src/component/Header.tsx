@@ -1,4 +1,3 @@
-"use client";
 
 import {  useState, useEffect, type JSX } from "react";
 import { Link, useLocation } from "react-router-dom";

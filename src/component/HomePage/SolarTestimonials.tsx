@@ -1,120 +1,133 @@
-"use client";
 
 import { motion, AnimatePresence } from "framer-motion";
 import { Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 const testimonials = [
   {
     name: "Rajesh Sharma",
     role: "Homeowner – Nagpur",
     image: "https://randomuser.me/api/portraits/men/32.jpg",
-    review:
-      "Switching to solar was the best financial decision we made. Our electricity bill dropped by 85% and the installation was professional.",
+    review: "Switching to solar was the best financial decision we made. Our electricity bill dropped by 85% and the installation was professional.",
   },
   {
     name: "Anita Verma",
     role: "Business Owner – Pune",
     image: "https://randomuser.me/api/portraits/women/44.jpg",
-    review:
-      "The team handled everything from subsidy documentation to installation. Our commercial solar system is performing beyond expectations.",
+    review: "The team handled everything from subsidy documentation to installation. Our commercial solar system is performing beyond expectations.",
   },
   {
     name: "Vikram Mehra",
     role: "Industrialist – Thane",
     image: "https://randomuser.me/api/portraits/men/46.jpg",
-    review:
-      "For our factory, high-efficiency panels were the only choice. The project was delivered on time and ROI looks incredible.",
+    review: "For our factory, high-efficiency panels were the only choice. The project was delivered on time and ROI looks incredible.",
   },
   {
     name: "Sonal Gupta",
     role: "Villa Owner – Mumbai",
     image: "https://randomuser.me/api/portraits/women/65.jpg",
-    review:
-      "I was worried about aesthetics, but the installation is sleek. Net-metering setup was handled entirely by the team. Highly recommend!",
+    review: "I was worried about aesthetics, but the installation is sleek. Net-metering setup was handled entirely by the team. Highly recommend!",
   },
 ];
 
 export default function SolarTestimonials() {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      nextStep();
-    }, 3000);
-    return () => clearInterval(timer);
-  }, [index]);
-
-  const nextStep = () => {
+  const nextStep = useCallback(() => {
     setDirection(1);
     setIndex((prev) => (prev + 1) % testimonials.length);
-  };
+  }, []);
 
-  const prevStep = () => {
+  const prevStep = useCallback(() => {
     setDirection(-1);
     setIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-  };
+  }, []);
+
+  // Auto-play logic with cleanup
+  useEffect(() => {
+    if (isPaused) return;
+    const timer = setInterval(nextStep, 5000);
+    return () => clearInterval(timer);
+  }, [nextStep, isPaused]);
 
   const variants = {
     enter: (direction: number) => ({
-      x: direction > 0 ? 1000 : -1000,
+      x: direction > 0 ? "100%" : "-100%",
       opacity: 0,
+      scale: 0.9,
     }),
     center: {
       zIndex: 1,
       x: 0,
       opacity: 1,
+      scale: 1,
     },
     exit: (direction: number) => ({
       zIndex: 0,
-      x: direction < 0 ? 1000 : -1000,
+      x: direction < 0 ? "100%" : "-100%",
       opacity: 0,
+      scale: 0.9,
     }),
   };
 
   return (
-    <section
-      className="py-14 px-6 overflow-hidden"
-      style={{ backgroundColor: "#a1bcde20" }}
+    <section 
+      className="py-20 px-6 overflow-hidden relative"
+      style={{ backgroundColor: "#a1bcde15" }}
     >
-      <div className="max-w-7xl mx-auto">
+      {/* Decorative background glow */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-[#1854a1] opacity-[0.03] blur-[100px] rounded-full pointer-events-none" />
 
-        {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-end mb-10 gap-6">
-          <div className="max-w-2xl">
-            <h2
-              className="font-bold uppercase tracking-[0.2em] text-sm mb-4"
+      <div className="max-w-7xl mx-auto">
+        {/* Header Section */}
+        <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-6 gap-8">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center md:text-left"
+          >
+            <h2 
+              className="font-bold uppercase tracking-[0.3em] text-xs mb-4"
               style={{ color: "#1854a1" }}
             >
-              Real Impact
+              Customer Success
             </h2>
-            <h3 className="text-4xl md:text-5xl font-black text-[#1854a1] leading-tight">
-              What Our Customers Say <br /> About Going Solar
+            <h3 className="text-4xl md:text-6xl font-black text-[#1854a1] leading-[1.1]">
+              Voices of  <span className="text-[#f6b643]">Clean Energy</span>
             </h3>
-          </div>
+          </motion.div>
 
-          <div className="flex gap-3">
+          {/* Navigation Controls */}
+          <div className="flex gap-4">
             <button
               onClick={prevStep}
-              className="p-4 rounded-full border bg-white shadow-sm transition-all"
-              style={{ borderColor: "#a1bcde" }}
+              aria-label="Previous testimonial"
+              className="group p-4 rounded-full border bg-white shadow-sm hover:shadow-md transition-all active:scale-90"
+              style={{ borderColor: "#a1bcde40" }}
             >
-              <ChevronLeft size={24} color="#1854a1" />
+              <ChevronLeft size={24} className="text-[#1854a1] group-hover:-translate-x-1 transition-transform" />
             </button>
             <button
               onClick={nextStep}
-              className="p-4 rounded-full shadow-md transition-all"
+              aria-label="Next testimonial"
+              className="group p-4 rounded-full shadow-lg hover:shadow-xl transition-all active:scale-90"
               style={{ backgroundColor: "#1854a1" }}
             >
-              <ChevronRight size={24} color="white" />
+              <ChevronRight size={24} className="text-white group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
         </div>
 
-        {/* Slider */}
-        <div className="relative h-112.5 md:h-87.5">
-          <AnimatePresence initial={false} custom={direction}>
+        {/* Main Slider Area */}
+        <div 
+          className="relative min-h-125 md:min-h-100"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+        >
+          <AnimatePresence initial={false} custom={direction} mode="wait">
             <motion.div
               key={index}
               custom={direction}
@@ -123,55 +136,66 @@ export default function SolarTestimonials() {
               animate="center"
               exit="exit"
               transition={{
-                x: { type: "spring", stiffness: 300, damping: 30 },
-                opacity: { duration: 0.2 },
+                x: { type: "spring", stiffness: 200, damping: 25 },
+                opacity: { duration: 0.3 },
+                scale: { duration: 0.4 }
               }}
               className="absolute w-full"
             >
-              <div className="grid md:grid-cols-2 gap-8 items-center bg-white rounded-[2.5rem] p-8 md:p-12  ">
-
-                {/* Image Section */}
-                <div className="relative">
-                  <div
-                    className="absolute -top-4 -left-4 w-24 h-24 rounded-full blur-2xl"
-                    style={{ backgroundColor: "#f6b64340" }}
-                  />
-                  <img
-                    src={testimonials[index].image}
-                    alt={testimonials[index].name}
-                    className="w-24 h-24 md:w-42 md:h-42 rounded-2xl object-cover border-4 border-white shadow-xl relative z-10"
-                  />
-                  <div className="mt-6">
-                    <h4 className="text-2xl font-bold text-[#1854a1]">
+              <div className="grid md:grid-cols-5 gap-0 md:gap-12 items-center  p-8 md:p-16 shadow-[0_20px_50px_rgba(24,84,161,0.08)] border border-[#a1bcde20]">
+                
+                {/* Profile Visuals */}
+                <div className="md:col-span-2 flex flex-col items-center md:items-start text-center md:text-left mb-8 md:mb-0">
+                  <div className="relative">
+                    <motion.div 
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      className="absolute -inset-4 rounded-full opacity-20 blur-xl"
+                      style={{ backgroundColor: "#f6b643" }}
+                    />
+                    <img
+                      src={testimonials[index].image}
+                      alt={testimonials[index].name}
+                      className="w-32 h-32 md:w-48 md:h-48 rounded-4xl object-cover border-8 border-white shadow-2xl relative z-10 rotate-3 hover:rotate-0 transition-transform duration-500"
+                    />
+                  </div>
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="mt-8"
+                  >
+                    <h4 className="text-3xl font-black text-[#1854a1] leading-tight">
                       {testimonials[index].name}
                     </h4>
-                    <p style={{ color: "#f6b643" }} className="font-medium">
+                    <p className="text-[#f6b643] font-bold text-sm tracking-widest uppercase mt-2">
                       {testimonials[index].role}
                     </p>
-                  </div>
+                  </motion.div>
                 </div>
 
-                {/* Content */}
-                <div className="relative">
+                {/* Testimonial Text */}
+                <div className="md:col-span-3 relative">
                   <Quote
-                    className="absolute -top-10 -left-6 opacity-10"
-                    size={90}
+                    className="absolute -top-16 -left-8 md:-left-12 opacity-[0.05] pointer-events-none"
+                    size={140}
                     color="#1854a1"
+                    strokeWidth={1}
                   />
                   <div className="relative z-10">
-                    <div className="flex mb-6">
+                    <div className="flex gap-1 mb-8 justify-center md:justify-start">
                       {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          size={20}
-                          fill="#f6b643"
-                          stroke="#f6b643"
-                        />
+                        <Star key={i} size={18} fill="#f6b643" stroke="none" />
                       ))}
                     </div>
-                    <p className="text-gray-600 text-lg md:text-xl italic leading-relaxed">
+                    <motion.p 
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.3 }}
+                      className="text-gray-600 text-xl md:text-3xl font-medium italic leading-snug"
+                    >
                       "{testimonials[index].review}"
-                    </p>
+                    </motion.p>
                   </div>
                 </div>
 
@@ -180,8 +204,8 @@ export default function SolarTestimonials() {
           </AnimatePresence>
         </div>
 
-        {/* Dots */}
-        <div className="flex justify-center gap-3 mt-1">
+        {/* Dynamic Pagination Dots */}
+        <div className="flex justify-center gap-3 mt-5">
           {testimonials.map((_, i) => (
             <button
               key={i}
@@ -189,12 +213,14 @@ export default function SolarTestimonials() {
                 setDirection(i > index ? 1 : -1);
                 setIndex(i);
               }}
-              className="h-2 rounded-full transition-all duration-300"
-              style={{
-                width: i === index ? "32px" : "8px",
-                backgroundColor: i === index ? "#1854a1" : "#a1bcde",
-              }}
-            />
+              className="group relative h-3 rounded-full overflow-hidden transition-all duration-500"
+              style={{ width: i === index ? "48px" : "12px" }}
+              aria-label={`Go to slide ${i + 1}`}
+            >
+              <div 
+                className={`absolute inset-0 transition-colors duration-300 ${i === index ? 'bg-[#1854a1]' : 'bg-[#a1bcde60] group-hover:bg-[#a1bcde]'}`}
+              />
+            </button>
           ))}
         </div>
       </div>

@@ -12,12 +12,12 @@ const HomeMain = () => {
     return (
         <>
             <HeroSection />
-            <SolarAboutSection/>
+            <SolarAboutSection />
             <SolarCalculator />
-          <SolarStatsSection/>
+            <SolarStatsSection />
             <WhyChooseSection />
             <SolarServicesSection />
-              <Scroll />
+            <Scroll />
             <SolarTestimonials />
             <SolarFAQ />
         </>

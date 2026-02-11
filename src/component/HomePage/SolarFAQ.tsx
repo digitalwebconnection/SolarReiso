@@ -1,4 +1,3 @@
-"use client";
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -151,21 +150,6 @@ export default function SolarFAQ() {
               </motion.div>
             );
           })}
-        </motion.div>
-
-        {/* Bottom Support CTA */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-          className="mt-16 text-center"
-        >
-          <p className="text-slate-500 font-medium">
-            Still have questions? 
-            <a href="/contact-us" className="ml-2 text-[#1854a1] font-bold hover:underline">
-              Speak with a solar expert today →
-            </a>
-          </p>
         </motion.div>
       </div>
     </section>

@@ -1,4 +1,4 @@
-"use client";
+
 import { useState, useMemo, type JSX } from "react";
 
 const SolarCalculator = (): JSX.Element => {

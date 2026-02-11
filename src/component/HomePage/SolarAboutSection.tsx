@@ -1,4 +1,3 @@
-"use client";
 
 import { motion } from "framer-motion";
 import { Sun, Globe, Zap, ArrowRight, ShieldCheck} from "lucide-react";
