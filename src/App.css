@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+.nav-link {
+  @apply text-sm font-medium text-gray-700 hover:text-black transition;
+}
+
+.nav-link.active {
+  @apply text-black border-b-2 border-green-600 pb-1;
+}
